@@ -1,0 +1,5 @@
+torch
+numpy
+plotly
+matplotlib
+fake-bpy-module-4.3
