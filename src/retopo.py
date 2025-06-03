@@ -2,6 +2,7 @@ import os
 import math
 import matplotlib.pyplot as ply
 import numpy as np
+import sys
 #! import pandas as pd
 
 
@@ -94,15 +95,21 @@ def create_circles(verts_num: int):
         bounding_box = np.vstack([bounding_box, cord_plane_z])
 
 
+
 def connect_faces():
     global bounding_box
     global GROUPS
+    cords = []
     
-    x_vals = 1
-
-def create_circle_helper():
-    global bounding_box
-    global shrink_wrap
+    for i, vals in enumerate(bounding_box):
+        cords = []
+        temp = np.delete(bounding_box, i, axis=0)
+        temp_xs = np.sum(np.abs(temp-vals), axis=1)
+        difference = temp_xs.argmin()
+        temp = np.delete(temp, difference, axis=0)
+        cords.append(i)
+        cords.append(difference)
+        GROUPS.append(cords)
 
 
 
@@ -116,15 +123,18 @@ def draw_model(filepath:str):
                 file.write(f"{bounding_box[i][j]} ")
             file.write("\n")
         val_f = 1
-        for i in range(len(bounding_box)):
+        for i, val in enumerate(GROUPS):
             file.write(f"f ")
-            for j in range(3):
-                file.write(f"{val_f+j} ")
-            val_f += 3
-            file.write(f"\n")
+            for j in range(len(GROUPS[i])):
+                file.write(f"{GROUPS[i][j]} ")
+            file.write("\n")
+                
+
+
 extract_shape("mesh_7.obj")
-print("Done")
+print("Working ...")
 vertex_setter(3)
-create_circles()
-print(bounding_box)
+create_circles(3)
+#print(bounding_box)
+connect_faces()
 draw_model("mesh_12.obj")
