@@ -3,6 +3,7 @@ import math
 import matplotlib.pyplot as ply
 import numpy as np
 import sys
+from scipy.spatial import ConvexHull, ckdtree
 #! import pandas as pd
 
 
@@ -96,20 +97,40 @@ def create_circles(verts_num: int):
 
 
 
-def connect_faces():
+def connect_faces_2():
     global bounding_box
     global GROUPS
     cords = []
+    hull = ConvexHull(bounding_box)
+    GROUPS = hull.simplices
+
+def connect_faces():
+    global bounding_box
+    global GROUPS
     
+    cords_x = []
+    closest_x = []
+    closest_y = []
+    closest_z = []
     for i, vals in enumerate(bounding_box):
-        cords = []
-        temp = np.delete(bounding_box, i, axis=0)
-        temp_xs = np.sum(np.abs(temp-vals), axis=1)
-        difference = temp_xs.argmin()
-        temp = np.delete(temp, difference, axis=0)
-        cords.append(i)
-        cords.append(difference)
-        GROUPS.append(cords)
+        temp1 = 9999999
+        val = None
+        val2 = None
+        temp2 = 9999999
+        cords_x = []
+        for j, vals2 in enumerate(bounding_box):
+                diff = np.abs(vals[0]-vals2[0])
+                print(diff)
+                if temp1 > diff:
+                    temp1 = diff
+                    val = j
+                elif temp2 > diff:
+                    temp2 = diff
+                    val2 = j
+        cords_x.append(i)
+        cords_x.append(val)
+        cords_x.append(val2)
+        closest_x.append(cords_x)
 
 
 
@@ -122,13 +143,18 @@ def draw_model(filepath:str):
             for j in range(len(bounding_box[i])):
                 file.write(f"{bounding_box[i][j]} ")
             file.write("\n")
-        val_f = 1
+        
+        """
         for i, val in enumerate(GROUPS):
             file.write(f"f ")
             for j in range(len(GROUPS[i])):
-                file.write(f"{GROUPS[i][j]} ")
+                file.write(f"{GROUPS[i][j]+1} ")
             file.write("\n")
-                
+        """
+        for i in range(len(GROUPS)):
+            file.write("f ")
+            file.write(f"{GROUPS[i]}")
+            file.write("\n")        
 
 
 extract_shape("mesh_7.obj")
