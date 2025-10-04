@@ -1,0 +1,23 @@
+{
+    "Parts": {
+        "None": 0,
+        "Arm": 1,
+        "Legs": 2,
+        "Torso":4,
+        "Head":5
+    },
+    "Topology": {
+        "Unknown": 0,
+        "Specific":1,
+        "Normal" : 2,
+        "Bad" : 3,
+        "Excellent" : 4
+    },
+    "Density" : {
+        "extreme": 0,
+        "high":1,
+        "medium": 2,
+        "low" : 3,
+        "minimal": 4 
+    }
+}
