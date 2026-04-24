@@ -12,7 +12,7 @@ Download: [Retopology](https://www.shapesynth.com)
 
 
 ### Support:
-email Software:  conteacus@shapesynth.com<br>
+email Software:  contactus@shapesynth.com<br>
 email Other: [ShapeSynth](https://www.shapesynth.com/contact-us)
 
 
